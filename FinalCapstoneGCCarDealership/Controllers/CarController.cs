@@ -40,28 +40,29 @@ namespace FinalCapstoneGCCarDealership.Controllers
             CarDBEntities ORM = new CarDBEntities();
 
             List<Car> MakeList = ORM.Cars.Where(c => c.carMake.Contains(carMake)).ToList();
+            List<Car> ModelList = ORM.Cars.Where(c => c.carModel.Contains(carModel)).ToList();
+            List<Car> YearList = ORM.Cars.Where(c => c.carYear.Contains(carYear)).ToList();
+            List<Car> ColorList = ORM.Cars.Where(c => c.carColor.Contains(carColor)).ToList();
 
             if (carMake == null)
                 {
                 MakeList.Clear();
-                }
-            List<Car> ModelList = ORM.Cars.Where(c => c.carModel.Contains(carModel)).ToList();
-                if (carModel == null)
+                //maybe make carMake required
+            }
+            if (carModel == null)
                 {
-                ModelList.Clear();
+                ModelList = new List<Car>(MakeList);
                 }
-                List<Car> YearList = ORM.Cars.Where(c => c.carYear.Contains(carYear)).ToList();
                 if (carYear == null)
                 {
-                    YearList.Clear();
-            }
-                List<Car> ColorList = ORM.Cars.Where(c => c.carColor.Contains(carColor)).ToList();
-            if (carColor == null)
-            {
-                    ColorList.Clear();
-            }
-            List<Car> ResultList = MakeList.Intersect(ModelList).Intersect(YearList).Intersect(ColorList).ToList();
-            return ResultList;
+                YearList = new List<Car>(ModelList);
+                }
+                if (carColor == null)
+                {
+                ColorList = new List<Car>(YearList);
+                }
+                List<Car> ResultList = MakeList.Intersect(ModelList).Intersect(YearList).Intersect(ColorList).ToList();
+                return ResultList;
             
         }
     }
